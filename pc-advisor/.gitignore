@@ -1,0 +1,129 @@
+# ============================================================
+#  pc-advisor — .gitignore
+#  Stack: Spring Boot 3 (Maven) · React/Vite/TS · Ionic/Capacitor · Docker · MySQL
+# ============================================================
+
+# ───────────────────────────────────────────
+#  SECRETS / VARIABLES DE ENTORNO
+# ───────────────────────────────────────────
+.env
+.env.*
+!.env.example
+application-local.yml
+application-local.properties
+application-secrets.yml
+*.secret
+secrets/
+
+# ───────────────────────────────────────────
+#  JAVA / MAVEN  (backend/)
+# ───────────────────────────────────────────
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+
+# Maven wrapper cache
+.mvn/wrapper/maven-wrapper.jar
+!**/mvnw
+!**/mvnw.cmd
+
+# Spring Boot devtools restart trigger
+.spring-boot-devtools.properties
+
+# ───────────────────────────────────────────
+#  NODE / NPM  (web/ y mobile/)
+# ───────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+
+# ───────────────────────────────────────────
+#  VITE  (web/)
+# ───────────────────────────────────────────
+dist/
+dist-ssr/
+.vite/
+
+# ───────────────────────────────────────────
+#  IONIC / CAPACITOR  (mobile/)
+# ───────────────────────────────────────────
+# Build de Ionic
+www/
+
+# Capacitor — proyectos nativos generados (no se editan a mano)
+android/
+ios/
+
+# Capacitor config cache
+.capacitor/
+
+# ───────────────────────────────────────────
+#  DOCKER
+# ───────────────────────────────────────────
+# Overrides con credenciales locales
+docker-compose.override.yml
+docker-compose.local.yml
+
+# ───────────────────────────────────────────
+#  IDEs
+# ───────────────────────────────────────────
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# VS Code
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json.example
+
+# Eclipse / STS
+.classpath
+.project
+.settings/
+bin/
+.factorypath
+
+# ───────────────────────────────────────────
+#  SISTEMA OPERATIVO
+# ───────────────────────────────────────────
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# ───────────────────────────────────────────
+#  LOGS Y TEMPORALES
+# ───────────────────────────────────────────
+*.log
+logs/
+*.tmp
+*.temp
+*.swp
+*.bak
+
+# ───────────────────────────────────────────
+#  COBERTURA Y TESTS
+# ───────────────────────────────────────────
+coverage/
+.nyc_output/
+surefire-reports/
+jacoco.exec
+jacoco/
