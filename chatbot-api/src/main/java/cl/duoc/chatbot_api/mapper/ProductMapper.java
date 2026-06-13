@@ -1,7 +1,7 @@
 package cl.duoc.chatbot_api.mapper;
 
-import cl.duoc.chatbot_api.dtos.ProductRequest;
-import cl.duoc.chatbot_api.dtos.ProductResponse;
+import cl.duoc.chatbot_api.dtos.request.ProductRequest;
+import cl.duoc.chatbot_api.dtos.response.ProductResponse;
 import cl.duoc.chatbot_api.model.Product;
 
 /**

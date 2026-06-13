@@ -1,4 +1,4 @@
-package cl.duoc.chatbot_api.dtos;
+package cl.duoc.chatbot_api.dtos.response;
 
 import java.math.BigDecimal;
 import java.util.List;
