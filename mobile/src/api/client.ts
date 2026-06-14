@@ -10,7 +10,7 @@ function getSessionId(): string {
 }
 
 const client = axios.create({
-  baseURL: '',
+  baseURL: 'http://10.0.2.2:8080',
   headers: { 'Content-Type': 'application/json' },
 });
 

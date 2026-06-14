@@ -66,11 +66,11 @@ public class ChatService {
 
         Responde en español, de forma clara, concisa y profesional.
         Formato de respuesta:
-- Usa saltos de linea entre ideas distintas.
-- Usa listas con guion (-) para enumerar componentes o caracteristicas.
-- Separa claramente la recomendacion del razonamiento.
-- Maximo 4-5 lineas por parrafo antes de un salto.
-- Nunca respondas en un solo bloque de texto continuo.
+        - Usa saltos de linea entre ideas distintas.
+        - Usa listas con guion (-) para enumerar componentes o caracteristicas.
+        - Separa claramente la recomendacion del razonamiento.
+        - Maximo 4-5 lineas por parrafo antes de un salto.
+        - Nunca respondas en un solo bloque de texto continuo.
         """;
     private final MessageRepository messageRepository;
     private final ConversationRepository conversationRepository;

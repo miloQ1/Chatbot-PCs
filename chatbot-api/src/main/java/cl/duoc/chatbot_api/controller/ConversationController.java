@@ -75,7 +75,7 @@ public class ConversationController {
     }
 
     @DeleteMapping("/current")
-public ResponseEntity<Void> deleteCurrent(
+    public ResponseEntity<Void> deleteCurrent(
         @RequestHeader(value = SESSION_HEADER, required = false) String sessionId) {
     requireSessionId(sessionId);
     conversationService.deleteCurrent(sessionId);
