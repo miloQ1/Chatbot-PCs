@@ -18,21 +18,24 @@ export function ChatPanel({ onRecommend }: Props) {
   }, [chat.messages]);
 
   useEffect(() => {
-    if (chat.recommendedIds.length > 0) {
+    if (chat.recommendedIds && chat.recommendedIds.length > 0) {
       onRecommend(chat.recommendedIds, chat.recommendedProducts);
     }
   }, [chat.recommendedIds]);
 
   return (
-    <div style={{ flex: 1, height: "100vh", display: "flex", flexDirection: "column", background: "#fff" }}>
+    <div style={{ display: "flex", flexDirection: "column", height: "100%", background: "#fff", overflow: "hidden" }}>
 
-      <div style={{ padding: "20px", borderBottom: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div style={{ padding: "16px 20px", borderBottom: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0 }}>
         <div>
-          <h2 style={{ margin: 0, fontSize: "18px", fontWeight: 700, color: "#111827" }}>Asesor de PC</h2>
-          <p style={{ margin: 0, fontSize: "13px", color: "#6b7280" }}>Cuentame que necesitas y te ayudo a armar tu PC ideal.</p>
+          <h2 style={{ margin: 0, fontSize: "16px", fontWeight: 700, color: "#111827" }}>Asesor de PC</h2>
+          <p style={{ margin: 0, fontSize: "12px", color: "#6b7280" }}>Cuéntame qué necesitas y te ayudo a armar tu PC ideal.</p>
         </div>
-        <button onClick={chat.resetConversation} style={{ background: "none", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "6px 12px", fontSize: "13px", color: "#6b7280", cursor: "pointer" }}>
-          Nueva conversacion
+        <button
+          onClick={chat.resetConversation}
+          style={{ background: "none", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "6px 12px", fontSize: "12px", color: "#6b7280", cursor: "pointer" }}
+        >
+          Nueva conversación
         </button>
       </div>
 
@@ -44,16 +47,23 @@ export function ChatPanel({ onRecommend }: Props) {
         )}
         {!chat.loading && chat.messages.length === 0 && (
           <div style={{ textAlign: "center", color: "#9ca3af", marginTop: "60px", fontSize: "14px" }}>
-            Escribe un mensaje para comenzar
+            Escribe un mensaje para comenzar 👇
           </div>
         )}
-        {chat.messages.map((message: any) => (
-          <MessageBubble key={message.id} message={message} recommendedProducts={chat.recommendedMap?.[message.id] ?? []} />
-        ))}
+        {chat.messages.map((message: any) => {
+          const recommended = chat.recommendedMap ? (chat.recommendedMap[message.id] ?? []) : [];
+          return (
+            <MessageBubble
+              key={message.id}
+              message={message}
+              recommendedProducts={recommended}
+            />
+          );
+        })}
         {chat.sending && (
           <div style={{ display: "flex", justifyContent: "flex-start", marginBottom: "16px" }}>
             <div style={{ padding: "10px 14px", borderRadius: "18px 18px 18px 4px", background: "#f1f5f9", fontSize: "14px", color: "#6b7280" }}>
-              Buscando en el catalogo...
+              Buscando en el catálogo...
             </div>
           </div>
         )}
