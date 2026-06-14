@@ -16,6 +16,9 @@ public class WikimediaClientConfig {
     public RestClient wikimediaRestClient() {
         return RestClient.builder()
                 .baseUrl("https://commons.wikimedia.org/w/api.php")
+                
+                // EL HEADER SE CONFIGURA AQUÍ, UNA SOLA VEZ
+                .defaultHeader("User-Agent", "PCAdvisorBot/1.0 (ca.queupil@duocuc.cl)")
                 .build();
     }
 }

@@ -64,24 +64,28 @@ public class WikimediaImageService {
      * Paso 2: dado el titulo del archivo, obtiene la URL directa de la imagen.
      */
     private String fetchImageUrl(String fileTitle) {
-        JsonNode response = wikimediaRestClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .queryParam("action", "query")
-                        .queryParam("titles", fileTitle)
-                        .queryParam("prop", "imageinfo")
-                        .queryParam("iiprop", "url")
-                        .queryParam("format", "json")
-                        .build())
-                .retrieve()
-                .body(JsonNode.class);
- 
-        JsonNode pages = response.path("query").path("pages");
-        for (JsonNode page : pages) {
-            JsonNode imageInfo = page.path("imageinfo");
-            if (imageInfo.isArray() && !imageInfo.isEmpty()) {
-                return imageInfo.get(0).path("url").asText(null);
-            }
-        }
+    JsonNode response = wikimediaRestClient.get()
+            .uri(uriBuilder -> uriBuilder
+                    .queryParam("action", "query")
+                    .queryParam("titles", fileTitle)
+                    .queryParam("prop", "imageinfo")
+                    .queryParam("iiprop", "url")
+                    .queryParam("format", "json")
+                    .build())
+            .retrieve()
+            .body(JsonNode.class);
+
+    if (response == null || !response.has("query")) {
         return null;
     }
+
+    JsonNode pages = response.path("query").path("pages");
+    for (JsonNode page : pages) {
+        JsonNode imageInfo = page.path("imageinfo");
+        if (imageInfo.isArray() && !imageInfo.isEmpty()) {
+            return imageInfo.get(0).path("url").asText(null);
+        }
+    }
+    return null;
+}
 }

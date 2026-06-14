@@ -29,6 +29,7 @@ import cl.duoc.chatbot_api.model.Message;
 import cl.duoc.chatbot_api.model.MessageRole;
 import cl.duoc.chatbot_api.model.ProductCategory;
 import cl.duoc.chatbot_api.repository.ConversationRepository;
+import cl.duoc.chatbot_api.repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -67,7 +68,7 @@ public class ChatService {
               con temas de armado de PC y componentes.
             - Responde en español, de forma clara y concisa.
             """;
- 
+    private final MessageRepository messageRepository;
     private final ConversationRepository conversationRepository;
     private final ProductService productService;
     private final AiClient aiClient;
@@ -79,45 +80,45 @@ public class ChatService {
     @Transactional
     public ChatMessageResponse sendMessage(Long conversationId, String sessionId, String content) {
         Conversation conversation = getConversationForSession(conversationId, sessionId);
- 
+
+        // Crear y guardar el mensaje del usuario explicitamente
         Message userMessage = Message.builder()
                 .role(MessageRole.USER)
                 .content(content)
+                .conversation(conversation)
                 .build();
-        conversation.addMessage(userMessage);
- 
+        userMessage = messageRepository.save(userMessage);
+
         List<AiMessage> aiMessages = buildAiMessages(conversation);
         List<ProductResponse> recommendedProducts = new ArrayList<>();
- 
+
         AiChatResponse response = aiClient.chat(AiChatRequest.builder()
                 .messages(aiMessages)
                 .tools(List.of(buscarProductosTool()))
                 .build());
- 
+
         int iterations = 0;
         while (response.getMessage().hasToolCalls() && iterations < MAX_TOOL_ITERATIONS) {
             aiMessages.add(response.getMessage());
- 
             for (AiToolCall toolCall : response.getMessage().getToolCalls()) {
                 List<ProductResponse> found = executeToolCall(toolCall);
                 recommendedProducts.addAll(found);
                 aiMessages.add(AiMessage.toolResult(toolCall.getId(), toToolResultJson(found)));
             }
- 
             response = aiClient.chat(AiChatRequest.builder()
                     .messages(aiMessages)
                     .build());
             iterations++;
         }
- 
+
+        // Crear y guardar el mensaje del asistente explicitamente
         Message assistantMessage = Message.builder()
                 .role(MessageRole.ASSISTANT)
                 .content(response.getMessage().getContent())
+                .conversation(conversation)
                 .build();
-        conversation.addMessage(assistantMessage);
- 
-        conversationRepository.save(conversation);
- 
+        assistantMessage = messageRepository.save(assistantMessage);
+
         return new ChatMessageResponse(
                 ConversationMapper.toMessageResponse(userMessage),
                 ConversationMapper.toMessageResponse(assistantMessage),

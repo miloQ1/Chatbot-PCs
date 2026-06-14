@@ -7,6 +7,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import lombok.extern.slf4j.Slf4j;
 
 import cl.duoc.chatbot_api.dtos.response.ErrorResponse;
 
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
  * Manejador global de excepciones (RNF2). Centraliza el formato de las respuestas
  * de error de toda la API usando ErrorResponse.
  */
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -72,13 +74,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGeneric(Exception ex, HttpServletRequest request) {
-        ErrorResponse body = ErrorResponse.of(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
-                "Ocurrio un error inesperado.",
-                request.getRequestURI()
-        );
-        return ResponseEntity.internalServerError().body(body);
-    }
+public ResponseEntity<ErrorResponse> handleGeneric(Exception ex, HttpServletRequest request) {
+    log.error("Error inesperado en {}: {}", request.getRequestURI(), ex.getMessage(), ex);
+    ErrorResponse body = ErrorResponse.of(
+            HttpStatus.INTERNAL_SERVER_ERROR.value(),
+            HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
+            "Ocurrio un error inesperado.",
+            request.getRequestURI()
+    );
+    return ResponseEntity.internalServerError().body(body);
+}
 }

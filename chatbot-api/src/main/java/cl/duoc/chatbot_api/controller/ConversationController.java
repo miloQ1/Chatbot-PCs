@@ -2,6 +2,7 @@ package cl.duoc.chatbot_api.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -72,5 +73,13 @@ public class ConversationController {
             throw new MissingSessionIdException();
         }
     }
+
+    @DeleteMapping("/current")
+public ResponseEntity<Void> deleteCurrent(
+        @RequestHeader(value = SESSION_HEADER, required = false) String sessionId) {
+    requireSessionId(sessionId);
+    conversationService.deleteCurrent(sessionId);
+    return ResponseEntity.noContent().build();
+}
 }
  

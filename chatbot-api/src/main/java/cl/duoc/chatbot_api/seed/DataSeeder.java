@@ -32,12 +32,20 @@ public class DataSeeder implements CommandLineRunner {
             log.info("La tabla products ya tiene datos, se omite el seed inicial.");
             return;
         }
- 
+
         log.info("Poblando catalogo inicial de productos ({} items)...", SEED_PRODUCTS.size());
- 
+
         for (SeedProduct seed : SEED_PRODUCTS) {
+            
+            // Pausa de 500ms para respetar el rate limit de Wikimedia
+            try {
+                Thread.sleep(500); 
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+
             String imageUrl = wikimediaImageService.findImageUrl(seed.brand() + " " + seed.name());
- 
+
             Product product = Product.builder()
                     .category(seed.category())
                     .brand(seed.brand())
@@ -47,10 +55,10 @@ public class DataSeeder implements CommandLineRunner {
                     .priceClp(seed.priceClp())
                     .imageUrl(imageUrl)
                     .build();
- 
+
             productRepository.save(product);
         }
- 
+
         log.info("Catalogo inicial cargado.");
     }
  

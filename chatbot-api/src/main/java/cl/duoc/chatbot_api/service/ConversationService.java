@@ -37,4 +37,10 @@ public class ConversationService {
                                 .build()
                 ));
     }
+
+    @Transactional
+public void deleteCurrent(String sessionId) {
+    conversationRepository.findBySessionId(sessionId)
+            .ifPresent(conversationRepository::delete);
+}
 }
